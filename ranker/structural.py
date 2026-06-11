@@ -165,7 +165,7 @@ def _skills_trust_score(candidate: dict, result: StructuralResult) -> float:
     total = 0.0
     for skill in candidate.get("skills", []) or []:
         name = (skill.get("name") or "").lower()
-        if not any(jd in name or name in jd for jd in config.JD_SKILLS):
+        if not any(jd in name or (len(name) >= 3 and name in jd) for jd in config.JD_SKILLS):
             continue
         duration = skill.get("duration_months", 0) or 0
         endorsements = skill.get("endorsements", 0) or 0
@@ -204,7 +204,8 @@ def _logistics_score(candidate: dict, result: StructuralResult) -> float:
         loc = config.LOCATION_INDIA_NO_RELOCATE
         result.concerns.append("outside the JD's listed cities and not flagged willing to relocate")
 
-    notice = int(signals.get("notice_period_days") or 90)
+    raw_notice = signals.get("notice_period_days")
+    notice = 90 if raw_notice is None else int(raw_notice)
     notice_score = config.NOTICE_LONG
     for max_days, value in config.NOTICE_STEPS:
         if notice <= max_days:

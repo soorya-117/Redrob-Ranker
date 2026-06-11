@@ -31,6 +31,7 @@ from .structural import StructuralResult
 
 def _facts(candidate: dict, structural: StructuralResult, behavioral: BehavioralResult) -> dict:
     profile = candidate.get("profile", {})
+    components = structural.components or {}
     return {
         "yoe": float(profile.get("years_of_experience") or 0.0),
         "title": profile.get("current_title") or "unspecified role",
@@ -42,6 +43,10 @@ def _facts(candidate: dict, structural: StructuralResult, behavioral: Behavioral
         "notes": behavioral.notes,
         "response_rate": behavioral.response_rate,
         "days_inactive": behavioral.days_inactive,
+        "strong_fit": (
+            components.get("career_evidence", 0.0) >= 0.40
+            or components.get("title_domain", 0.0) >= 0.90
+        ),
     }
 
 
@@ -88,10 +93,16 @@ def _second_sentence(f: dict, rank: int, second_idx: int) -> str:
 
     if rank <= 10:
         if concerns:
-            pool = [
-                f"Main watch-out: {concerns[0]}, but the fit otherwise maps directly onto the JD's retrieval-and-ranking mandate.",
-                f"One caveat — {concerns[0]} — though everything else lines up with what the role needs.",
-            ]
+            if f["strong_fit"]:
+                pool = [
+                    f"Main watch-out: {concerns[0]}, but the fit otherwise maps directly onto the JD's retrieval-and-ranking mandate.",
+                    f"One caveat — {concerns[0]} — though everything else lines up with what the role needs.",
+                ]
+            else:
+                pool = [
+                    f"Main watch-out: {concerns[0]}; ranked on overall signal strength rather than direct retrieval evidence.",
+                    f"One caveat — {concerns[0]} — alongside a profile that scores well on aggregate rather than direct JD-domain history.",
+                ]
             # Surface a second concern when present and idx warrants it.
             if len(concerns) > 1:
                 pool.append(f"Two flags: {concerns[0]}, and {concerns[1]}.")
