@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# Dataset (465 MB uncompressed — never belongs in git)
+candidates.jsonl
+candidates.jsonl.gz
+
+# Large embedding matrix (~147 MB, over GitHub's 100 MB file limit).
+# Regenerated deterministically by embed.py — see README "Artifacts".
+artifacts/candidate_embeddings.npy
+
+# Local outputs
+sandbox_output.csv
+submission*.csv
+team_*.csv
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

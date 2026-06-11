@@ -1,0 +1,92 @@
+# Redrob Hackathon — Submission Metadata
+# Mirrors the portal metadata, as required by submission_spec.md section 10.3.
+# Fields marked TODO must be filled in before submission.
+
+# ============================================================================
+# Team identity
+# ============================================================================
+team_name: "redrob-ranker"  # TODO: replace with your registered team name if different
+
+primary_contact:
+  name: "Shyamalan T"
+  email: "TODO@example.com"        # TODO: your email
+  phone: "+91-XXXXXXXXXX"          # TODO: your phone
+
+team_members:
+  - name: "Shyamalan T"
+    email: "TODO@example.com"      # TODO: your email
+    role: "ML Engineer (solo)"
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+github_repo: "https://github.com/TODO_USERNAME/redrob-ranker"   # TODO after push
+sandbox_link: "https://huggingface.co/spaces/TODO_USERNAME/redrob-ranker"  # TODO after deploy
+
+reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./team_xxx.csv"
+# Ranking step only; requires the precomputed artifacts below. End-to-end:
+#   python embed.py --candidates ./candidates.jsonl   (one-time precompute, ~45 min)
+#   python rank.py --candidates ./candidates.jsonl --out ./team_xxx.csv   (< 5 min)
+
+# ============================================================================
+# Compute environment
+# ============================================================================
+compute:
+  platform: "Laptop — AMD Ryzen 7 7735HS"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.11"            # TODO: confirm with `python --version`
+  os: "Windows 11"
+  uses_gpu_for_inference: false     # ranking is numpy-only; embedding forced to CPU
+  has_network_during_ranking: false # rank.py makes zero network calls
+  pre_computation_required: true    # embed.py builds the embedding artifacts once
+  pre_computation_time_minutes: 45  # TODO: replace with your measured time
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
+# Declared use is not penalized; contradictions at Stage 5 are. Keep this honest.
+ai_tools_used:
+  - "Claude"
+
+ai_usage_summary: |
+  Used Claude (claude.ai) throughout development: architecture discussion,
+  drafting and reviewing the scoring modules, calibrating honeypot checks
+  against the sample data, and test design. All design decisions (weighting,
+  penalty structure, trap handling) were reviewed, understood and owned by me;
+  I can defend every component. No candidate data was sent to any hosted LLM,
+  and the ranking step itself makes no LLM or network calls.
+
+# ============================================================================
+# Approach summary
+# ============================================================================
+methodology_summary: |
+  Hybrid semantic + structural ranker. Pre-computation: all-MiniLM-L6-v2
+  embeddings (CPU) of a narrative-weighted candidate document (summary +
+  recent role descriptions; skills only if used >= 6 months) and of the JD.
+  Ranking (< 5 min, numpy only): final = (0.40 x semantic + 0.60 x structural)
+  x behavioral multiplier x integrity multiplier. Structural encodes the JD's
+  explicit rules: title/domain fit, career evidence of shipped
+  retrieval/ranking systems, 5-9y experience band, trust-weighted JD-skill
+  coverage (endorsements + duration, so stuffed lists score ~0), and
+  logistics — plus penalties for the JD's named disqualifiers
+  (consulting-only, research-only, title-chasers, CV-only, stale hands-on,
+  keyword stuffers). Behavioral signals act multiplicatively (activity
+  recency, response rate, open-to-work, interview completion) so an
+  unreachable candidate can't be rescued by a perfect profile. An integrity
+  module hard-flags arithmetically impossible profiles (claimed experience
+  exceeding observable career span, stated durations contradicting dates,
+  3+ "expert" skills with zero usage) — calibrated on the sample to a 0%
+  false-positive rate — pushing honeypots out of the top 100. Reasoning is
+  template-driven from computed profile facts only: deterministic pattern
+  rotation, mandatory concerns, rank-consistent tone.
+
+# ============================================================================
+# Declarations
+# ============================================================================
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: false   # TODO: set true after timing rank.py on your machine
