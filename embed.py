@@ -45,7 +45,8 @@ def main() -> None:
     model = SentenceTransformer(config.EMBEDDING_MODEL, device="cpu")
 
     jd_text = load_job_description(args.jd)
-    jd_embedding = model.encode(jd_text, normalize_embeddings=True)
+    bge_query_prefix = "Represent this sentence for searching relevant passages: "
+    jd_embedding = model.encode(bge_query_prefix + jd_text, normalize_embeddings=True)
     np.save(out_dir / "jd_embedding.npy", jd_embedding.astype(np.float32))
 
     ids: list[str] = []

@@ -39,7 +39,7 @@ def behavioral_multiplier(candidate: dict) -> BehavioralResult:
     if last_active:
         days = (config.REFERENCE_DATE - last_active).days
         result.days_inactive = days
-        step = math.exp(-max(0, days) / 60.0)
+        step = math.exp(-max(0, days) / 90.0)
         m *= step
         if days > 90:
             result.concerns.append(f"inactive on platform for ~{days} days")
