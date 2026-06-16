@@ -117,5 +117,30 @@ def behavioral_multiplier(candidate: dict) -> BehavioralResult:
         m *= (1.0 + config.APP_SUBMITTED_BONUS)
         result.notes.append("actively applying to roles")
 
+    # -- Additional Signals ---------------------------------------------------
+    oar = signals.get("offer_acceptance_rate")
+    if oar is not None and oar != -1:
+        if oar < 0.3:
+            m *= 0.90
+            result.concerns.append(f"low historical offer acceptance rate ({oar:.0%})")
+        elif oar >= 0.8:
+            m *= 1.02
+
+    pcs = signals.get("profile_completeness_score")
+    if pcs is not None:
+        if pcs < 50:
+            m *= 0.95
+            result.concerns.append(f"incomplete profile (score {pcs:.0f})")
+        elif pcs >= 90:
+            m *= 1.02
+
+    art = signals.get("avg_response_time_hours")
+    if art is not None:
+        if art > 72:
+            m *= 0.90
+            result.concerns.append(f"slow response time (~{art:.0f} hours)")
+        elif art <= 24:
+            m *= 1.02
+
     result.multiplier = max(config.BEHAVIORAL_FLOOR, min(config.BEHAVIORAL_CEILING, m))
     return result
