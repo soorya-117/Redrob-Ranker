@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 
 from . import config
 from .loading import parse_date
+import re
 
 
 def _contains_any(text: str, terms: tuple[str, ...] | frozenset | set) -> bool:
@@ -287,7 +288,6 @@ def _apply_penalties(candidate: dict, base: float, result: StructuralResult) -> 
     # injecting NLP hits. Fix: use \b word-boundary regex AND a separate
     # NLP_POSITIVE_TERMS list that excludes short ambiguous tokens ("text",
     # "nlp") that can appear in negating phrases like "no NLP background".
-    import re as _re
     skills_text = " ".join((s.get("name") or "").lower() for s in candidate.get("skills", []) or [])
     full_text = f"{narrative} {skills_text}"
     cv_hits = _count_hits(full_text, config.CV_SPEECH_ROBOTICS_TERMS)
@@ -303,7 +303,7 @@ def _apply_penalties(candidate: dict, base: float, result: StructuralResult) -> 
     )
     nlp_hits = sum(
         1 for t in nlp_positive_terms
-        if _re.search(r'\b' + _re.escape(t) + r'\b', full_text)
+        if re.search(r'\b' + re.escape(t) + r'\b', full_text)
     )
     if cv_hits >= 3 and nlp_hits == 0:
         result.penalties.append("cv_only")
