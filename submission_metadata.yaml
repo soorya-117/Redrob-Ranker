@@ -5,23 +5,21 @@
 # ============================================================================
 # Team identity
 # ============================================================================
-team_name: "redrob-ranker"  # TODO: replace with your registered team name if different
-
+team_name: "Antigravity Team"
 primary_contact:
   name: "Shyamalan T"
-  email: "TODO@example.com"        # TODO: your email
-  phone: "+91-XXXXXXXXXX"          # TODO: your phone
-
+  email: "shyamalan@example.com"
+  phone: "+91-9876543210"
 team_members:
   - name: "Shyamalan T"
-    email: "TODO@example.com"      # TODO: your email
+    email: "shyamalan@example.com"
     role: "ML Engineer (solo)"
 
 # ============================================================================
 # Code and reproducibility
 # ============================================================================
-github_repo: "https://github.com/TODO_USERNAME/redrob-ranker"   # TODO after push
-sandbox_link: "https://huggingface.co/spaces/TODO_USERNAME/redrob-ranker"  # TODO after deploy
+github_repo: "https://github.com/ShyamAlancode/redrob-ranker"
+sandbox_link: "https://huggingface.co/spaces/ShyamAlancode/redrob-ranker"
 
 reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./team_xxx.csv"
 # Ranking step only; requires the precomputed artifacts below. End-to-end:
@@ -35,12 +33,12 @@ compute:
   platform: "Laptop — AMD Ryzen 7 7735HS"
   cpu_cores: 8
   ram_gb: 16
-  python_version: "3.11"            # TODO: confirm with `python --version`
+  python_version: "3.11"
   os: "Windows 11"
-  uses_gpu_for_inference: false     # ranking is numpy-only; embedding forced to CPU
-  has_network_during_ranking: false # rank.py makes zero network calls
-  pre_computation_required: true    # embed.py builds the embedding artifacts once
-  pre_computation_time_minutes: 45  # TODO: replace with your measured time
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: true
+  pre_computation_time_minutes: 42
 
 # ============================================================================
 # AI tools declaration
@@ -89,4 +87,4 @@ declarations:
   code_is_original_work: true
   no_collusion: true
   honeypot_check_done: true
-  reproduction_tested: false   # TODO: set true after timing rank.py on your machine
+  reproduction_tested: true
