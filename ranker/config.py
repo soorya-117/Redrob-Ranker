@@ -142,8 +142,9 @@ BEHAVIORAL_FLOOR = 0.30
 BEHAVIORAL_CEILING = 1.15
 
 # last_active decay steps: (max_days_inactive, multiplier)
-ACTIVITY_DECAY = [(14, 1.00), (45, 0.95), (90, 0.85), (180, 0.70)]
-ACTIVITY_DECAY_STALE = 0.50  # inactive > 180 days ("not actually available")
+# Deprecated: replaced by continuous exponential decay in behavioral.py
+# ACTIVITY_DECAY = [(14, 1.00), (45, 0.95), (90, 0.85), (180, 0.70)]
+# ACTIVITY_DECAY_STALE = 0.50  # inactive > 180 days ("not actually available")
 
 # recruiter_response_rate steps: (min_rate, multiplier)
 RESPONSE_RATE_STEPS = [(0.60, 1.00), (0.30, 0.90), (0.10, 0.75)]

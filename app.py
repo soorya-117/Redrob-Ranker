@@ -69,7 +69,8 @@ if uploaded is not None:
     if st.button("Run ranking", type="primary"):
         model = get_model()
         with st.spinner("Embedding sample + JD..."):
-            jd_vec = model.encode(get_jd_text(), normalize_embeddings=True)
+            bge_query_prefix = "Represent this sentence for searching relevant passages: "
+            jd_vec = model.encode(bge_query_prefix + get_jd_text(), normalize_embeddings=True)
             docs = [build_candidate_document(c) for c in candidates]
             vecs = model.encode(docs, normalize_embeddings=True, show_progress_bar=False)
             sims = np.asarray(vecs) @ np.asarray(jd_vec)
