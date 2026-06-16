@@ -49,6 +49,8 @@ def main() -> None:
     jd_embedding = model.encode(bge_query_prefix + jd_text, normalize_embeddings=True)
     np.save(out_dir / "jd_embedding.npy", jd_embedding.astype(np.float32))
 
+    print("Model loaded successfully! Starting candidate processing...")
+
     ids: list[str] = []
     chunks: list[np.ndarray] = []
     batch: list[str] = []
@@ -71,7 +73,7 @@ def main() -> None:
         batch.append(build_candidate_document(candidate))
         if len(batch) >= config.EMBED_BATCH_SIZE:
             flush()
-        if n % 5000 == 0:
+        if n % 100 == 0:
             elapsed = time.time() - started
             print(f"  {n:>6} candidates embedded  ({elapsed/60:.1f} min, {n/elapsed:.0f}/s)")
     flush()
