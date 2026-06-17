@@ -14,7 +14,7 @@ cd redrob-ranker
 python -m venv .venv
 .venv\Scripts\activate          # Windows
 pip install -r requirements-dev.txt
-python -m pytest tests/ -v      # expect: 15 passed
+python -m pytest tests/ -v      # expect: 26 passed
 ```
 
 If torch install is slow/heavy, the CPU-only wheel is smaller:
