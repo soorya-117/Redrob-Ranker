@@ -90,6 +90,17 @@ expensive; here it is not.
 rank, and ties are broken by `candidate_id` ascending on the *rounded* score
 the spec checks. Two runs produce byte-identical CSVs.
 
+## Weight rationale
+
+`W_SEMANTIC = 0.40` / `W_STRUCTURAL = 0.60` are principled defaults, not empirically tuned.
+No labeled ground-truth ranking was available for calibration. Grid search over
+(W_SEM, W_STR) would optimise against our own assumptions, not ground truth.
+The JD is unusually rule-heavy — it names explicit disqualifiers, not relative
+preferences — so structural rules dominate correctly. The 0.40 semantic weight
+is enough to surface plain-language candidates whose narrative matches the JD
+without the fashionable vocabulary (the "plain-language Tier 5" case the JD
+explicitly warns about).
+
 ## Reasoning column
 
 Generated at write time from computed profile facts only — no free text, so
