@@ -155,7 +155,7 @@ RESPONSE_RATE_FLOOR = 0.60
 # ---------------------------------------------------------------------------
 
 INTEGRITY_FATAL = 0.02      # >= 2 hard inconsistencies: effectively excluded
-INTEGRITY_HARD = 0.30       # exactly 1 hard inconsistency
+INTEGRITY_HARD = 0.10       # exactly 1 hard inconsistency — tightened to keep honeypots out of top-100
 INTEGRITY_SOFT_DECAY = 0.90 # per soft inconsistency
 
 # Hard-flag thresholds
