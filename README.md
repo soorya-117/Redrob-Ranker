@@ -10,7 +10,7 @@ submission CSV with per-candidate reasoning.
 ```bash
 pip install -r requirements.txt
 
-# 1. One-time pre-computation (~45-165 min depending on CPU/OS thread settings): embeds every
+# 1. One-time pre-computation (~163 min depending on CPU/OS thread settings): embeds every
 #    candidate and the JD, writes artifacts/.
 python embed.py --candidates ./candidates.jsonl
 
