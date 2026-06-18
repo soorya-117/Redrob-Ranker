@@ -36,7 +36,13 @@ def main() -> None:
     args = parser.parse_args()
 
     # Imported here so `--help` works without the model stack installed.
+    import torch
     from sentence_transformers import SentenceTransformer
+
+    # Prevent PyTorch from oversubscribing threads on CPU (particularly on Windows)
+    # which causes thread thrashing and massive context switching overhead.
+    # Limiting PyTorch to 1 CPU thread keeps execution deterministic and highly performant.
+    torch.set_num_threads(1)
 
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)

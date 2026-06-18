@@ -10,7 +10,7 @@ submission CSV with per-candidate reasoning.
 ```bash
 pip install -r requirements.txt
 
-# 1. One-time pre-computation (~45 min on a laptop CPU): embeds every
+# 1. One-time pre-computation (~45-165 min depending on CPU/OS thread settings): embeds every
 #    candidate and the JD, writes artifacts/.
 python embed.py --candidates ./candidates.jsonl
 
@@ -124,7 +124,7 @@ ranker/
   honeypot.py             integrity checks (calibration notes inline)
   reasoning.py            Stage-4-oriented reasoning generation
   pipeline.py             scoring orchestration, top-K selection, CSV writer
-tests/test_pipeline.py    15 tests: honeypots, traps, tie-breaks, CSV format
+tests/test_pipeline.py    26 tests: honeypots, traps, tie-breaks, CSV format
 data/                     job description + bundle sample (sandbox input)
 scripts/                  the official format validator
 artifacts/                embedding artifacts written by embed.py
